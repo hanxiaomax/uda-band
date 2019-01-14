@@ -27,14 +27,20 @@
 
 [SQL样式指南 · SQL Style Guide](https://www.sqlstyle.guide/zh/)
 
+1. 大写
+2. 表和变量名中不需要空格
+3. 在查询中使用空格
+4. SQL 不区分大小写
+
+
 ### SQL 学习资源
 
 
-### 创建和删除
+### 1. 创建和删除
 `CREATE TABLE` 是一个在数据库中创建新表的语句。  
 `DROP TABLE` 是删除数据库中表的语句。
 
-### 查询
+### 2. 查询
 `SELECT FROM` 读取并显示数据。我们将这称为查询。 
 
 
@@ -55,7 +61,7 @@ poster_amt_usd
 total_amt_usd
 ```
 
-#### 1. 从 order 表中，提取全部的列（*表示全部的列）
+#### 2.1 从 order 表中，提取全部的列（*表示全部的列）
 
 ```sql
 SELECT * 
@@ -75,7 +81,7 @@ id	account_id	occurred_at	standard_qty	gloss_qty	poster_qty	total	standard_amt_u
 3	1001	2015-12-04T04:21:55.000Z	85	47	0	132	424.15	352.03	0.00	776.18
 ```
 
-#### 2. 从 order 表中选取特定的列(id, account_id, occurred_at)
+#### 2.2 从 order 表中选取特定的列(id, account_id, occurred_at)
 
 ```sql
 SELECT id, account_id, occurred_at
@@ -89,6 +95,15 @@ id	account_id	occurred_at
 2	1001	2015-11-05T03:34:33.000Z
 3	1001	2015-12-04T04:21:55.000Z
 ```
+
+### 3. 过滤和排序
+对于 SQL 来讲，查询语句固然重要，但是往往不是最终的结果，因为单纯的查询，其结果是一个“混沌巨兽”——结果集非常大，且杂乱。通过 SELECT 语句，我们可以做最基本的过滤，比如不使用`*`符合，而选择我们感兴趣的列，例如`SELECT id, account_id, occurred_at`。
+
+#### 3.1 `LIMIT` 
+
+#### 3.2 `WHERE`
+
+#### 3.3 `ORDER BY`
 
 
 
