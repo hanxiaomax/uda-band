@@ -73,18 +73,16 @@ def load_data(city, month, day):
     # CITY_DATA = { 'chicago': 'chicago.csv',
     #           'new york city': 'new_york_city.csv',
     #           'washington': 'washington.csv' }
-    print(CITY_DATA[city])
     df = pd.read_csv(CITY_DATA[city]) # 加载城市对应的 csv 文件
-
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
-    # df['day_of_week'] = df['Start Time'].dt.weekday_name
+    df['day_of_week'] = df['Start Time'].dt.weekday_name
 
     # filter by month if applicable
-    if month != 'All':
+    if month != 'all':
         # use the index of the months list to get the corresponding int
         # MONTH 存的是月份的名字，而 df 中存的是月份的数字
          #index 函数可以通过元素获取元素的索引，索引从0开始，而月份从1开始，所以需要+1
@@ -94,7 +92,7 @@ def load_data(city, month, day):
         df = df[df['month'] == month] #根据月份过滤
 
     # filter by day of week if applicable
-    if day != 'All':
+    if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day] #根据日过滤
 
@@ -107,13 +105,17 @@ def time_stats(df):
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    
+    # extract month and day of week from Start Time to create new columns
+    df['month'] = df['Start Time'].dt.month
+    df['day_of_week'] = df['Start Time'].dt.weekday_name
+    
     # TO DO: display the most common month
-    #print(df['month'].value_counts())
     print("\nThe most common month is {0}".format(MONTH[df['month'].mode()[0]]))
 
     # TO DO: display the most common day of week
-    print("\nThe most common day of week is {0}".format(DAYSOFWEEK[df['month'].mode()[0]]))
+    print("\nThe most common day of week is {0}".format([df['day_of_week'].mode()[0]]))
 
     # TO DO: display the most common start hour
     print("\nThe most common start hour {0}".format(df['Start Time'].dt.hour.mode()[0]))
