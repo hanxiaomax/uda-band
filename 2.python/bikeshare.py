@@ -74,7 +74,10 @@ def load_data(city, month, day):
     #           'new york city': 'new_york_city.csv',
     #           'washington': 'washington.csv' }
     df = pd.read_csv(CITY_DATA[city]) # 加载城市对应的 csv 文件
+    
+    
     # convert the Start Time column to datetime
+    # 转换原 csv 文件中的时间格式
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
     # extract month and day of week from Start Time to create new columns
@@ -87,7 +90,8 @@ def load_data(city, month, day):
         # MONTH 存的是月份的名字，而 df 中存的是月份的数字
          #index 函数可以通过元素获取元素的索引，索引从0开始，而月份从1开始，所以需要+1
         month = MONTH.index(month) + 1
-
+        print(month)
+        print(df['month'].unique())
         # filter by month to create the new dataframe
         df = df[df['month'] == month] #根据月份过滤
 
@@ -102,20 +106,15 @@ def load_data(city, month, day):
 # 这个函数的功能是打印时间相关的数据信息
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
-
+    
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-    df['Start Time'] = pd.to_datetime(df['Start Time'])
-    
-    # extract month and day of week from Start Time to create new columns
-    df['month'] = df['Start Time'].dt.month
-    df['day_of_week'] = df['Start Time'].dt.weekday_name
     
     # TO DO: display the most common month
-    print("\nThe most common month is {0}".format(MONTH[df['month'].mode()[0]]))
+    print("\nThe most common month is {0}".format(MONTH[df['month'].mode()[0]-1]))
 
     # TO DO: display the most common day of week
-    print("\nThe most common day of week is {0}".format([df['day_of_week'].mode()[0]]))
+    print("\nThe most common day of week is {0}".format(df['day_of_week'].mode()[0]))
 
     # TO DO: display the most common start hour
     print("\nThe most common start hour {0}".format(df['Start Time'].dt.hour.mode()[0]))
@@ -195,12 +194,15 @@ def main():
         city, month, day = get_filters() # 获取用户的输入（过滤条件）
 
         df = load_data(city, month, day) # 更具用户输入的过滤条件，加载数据
-
         
-        time_stats(df) # 时间数据
-        station_stats(df) #站点数据
-        trip_duration_stats(df) #行程数据
-        user_stats(df)#用户数据
+        # 如果过滤之后的 df 为空，则重新开始
+        if df.empty :
+            print("based on the filter, the data is empty.")
+        else:
+            time_stats(df) # 时间数据
+            station_stats(df) #站点数据
+            trip_duration_stats(df) #行程数据
+            user_stats(df)#用户数据
         
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes': # 死循环终止条件，用户不输入 yes，则程序停止
