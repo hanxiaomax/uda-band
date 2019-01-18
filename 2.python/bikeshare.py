@@ -111,9 +111,13 @@ def time_stats(df):
     start_time = time.time()
     
     # TO DO: display the most common month
+    # 求月的众数（众数可能为两个，用下标[0]取第一个），要确保 df['month'] 不为空
+    # 求出来的值是一个代表月份的数字，7月为7，但是我们要把它转换为 july
+    # 我们通过july 在MONTH 中是第7个元素，但是它的索引是6，所以这里要-1
     print("\nThe most common month is {0}".format(MONTH[df['month'].mode()[0]-1]))
 
     # TO DO: display the most common day of week
+    # 求 day_of_week 的众数，方法一样，但是这里已经是一个字符串，不需要再用DAYSOFWEEK转换
     print("\nThe most common day of week is {0}".format(df['day_of_week'].mode()[0]))
 
     # TO DO: display the most common start hour
@@ -185,10 +189,10 @@ def main():
     # 程序处理流程
         # 用户输入  --> 校验用户输入 --->获取过滤条件 --> 加载数据 ---> 
          ---> 输出结果
-                            -- 时间数据
-                            -- 站点数据
-                            -- 行程数据
-                            -- 用户数据
+                - 时间数据 time_stats
+                - 站点数据 station_stats
+                - 行程数据 trip_duration_stats
+                - 用户数据 user_stats
     """
     while True: # 死循环，让程序一直执行
         city, month, day = get_filters() # 获取用户的输入（过滤条件）
@@ -199,10 +203,10 @@ def main():
         if df.empty :
             print("based on the filter, the data is empty.")
         else:
-            time_stats(df) # 时间数据
-            station_stats(df) #站点数据
+            time_stats(df)          #时间数据
+            station_stats(df)       #站点数据
             trip_duration_stats(df) #行程数据
-            user_stats(df)#用户数据
+            user_stats(df)          #用户数据
         
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes': # 死循环终止条件，用户不输入 yes，则程序停止
