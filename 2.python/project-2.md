@@ -115,4 +115,6 @@ chicago all all
 
 示意图如下：（**注意：一个黑盒的输出可以是另外一个黑盒的输入**）
 
+![](https://github.com/hanxiaomax/uda-dand/blob/master/2.python/fullsizeoutput_de8.jpeg)
+
 功能点分解后，我们考虑画流程图将功能点串联起来，这个过程不是一次性就能完成的，如果发现问题，可能会需要回头重新分解功能点，这是一个循环的优化，调整过程。
