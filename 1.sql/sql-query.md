@@ -35,6 +35,11 @@
 
 ### SQL 学习资源
 
+SQL 的目的是为了查询结果，向着越来越精确的方向发展。精确包含两个含义：
+
+1.结果集中的元素由多变少，过滤掉不需要的内容
+2.结果集的混乱程度由高变低，使得规律更容易观察
+
 
 ### 1. 创建和删除
 `CREATE TABLE` 是一个在数据库中创建新表的语句。  
@@ -101,10 +106,115 @@ id	account_id	occurred_at
 
 #### 3.1 `LIMIT` 
 
-#### 3.2 `WHERE`
+`LIMIT` 命令始终是查询的最后一部分，写在语句的最后。`LIMIT` 允许我们限制出打印的条目个数
 
-#### 3.3 `ORDER BY`
+```sql
+SELECT occurred_at, account_id, channel
+FROM web_events
+LIMIT 15;
+```
 
 
+#### 3.2 `ORDER BY`
+
+对筛选的的结果再次进行排序，进一步让结果有序。
+可以在 ORDER BY 语句中的列之后添加 DESC，然后按降序排序，因为默认是按升序排序的
+
+```sql
+SELECT id, occurred_at, total_amt_usd
+FROM orders
+ORDER BY occurred_at
+LIMIT 10;
+```
+基于 `occurred_at`（发生时间）进行排序
+
+```sql
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY total_amt_usd DESC 
+LIMIT 5;
+```
+
+基于 `total_amt_usd`降序排序
+
+此外，我们还可以对多个列同时排序：
+
+```sql
+SELECT *
+FROM orders
+ORDER BY occurred_at DESC, total_amt_usd 
+LIMIT 5;
+```
+
+
+#### 3.3 `WHERE`
+WHERE 可以帮助我们创建当前查询的子集以缩小结果范围，通常配合比较符号和单引号来使用
+
+WHERE 语句中使用的常用符号包括：  
+`>`（大于）
+`<`（小于）
+`>=`（大于或等于）
+`<=`（小于或等于）
+`=`（等于）
+`!=`（不等于）
+
+```sql
+SELECT *
+FROM orders
+WHERE gloss_amt_usd >= 1000
+LIMIT 5;
+```
+从 orders 表中选择所有列，并筛选 gloss_amt_usd 值大于1000的5个结果
+
+```sql
+SELECT *
+FROM citys_data
+WHERE city = 'ShangHai'
+```
+
+从 citys_data 表中选择所有列，并筛选城市名为 'ShangHai' 的结果。注意字符串应该使用**单引号**
+
+### 4 逻辑运算符
+
+#### 4.1 `LIKE`
+
+LIKE 运算符对于处理文本非常有用。我们将在 WHERE 子句中使用 LIKE。 LIKE 运算符经常与 ％ 一起使用。% 是通配符，除此之外还有其他的通配符，关于通配符可以查看这个[链接](http://www.w3school.com.cn/sql/sql_wildcards.asp)
+
+```sql
+SELECT name
+FROM accounts
+WHERE name LIKE 'C%';
+```
+
+#### 4.2 `IN`
+
+IN 运算符对于数字和文本列都很有用。这个运算符可使我们使用 =，但对于特定列的多个项目。 可以检查我们要提取数据的一个、两个或多个列值，但这些都在同一个查询中。 在后面的概念中，我们将介绍 OR 运算符，也可以使用这个运算符执行这些任务，但使用 In 运算符编写的查询更清楚一些。
+
+```sql
+SELECT name, primary_poc, sales_rep_id
+FROM accounts
+WHERE name IN ('Walmart', 'Target', 'Nordstrom');
+```
+
+```sql
+SELECT *
+FROM web_events
+WHERE channel IN ('organic', 'adwords');
+```
+
+
+## 小结
+
+|语句|作用|样例|文档|
+|:--:|:--:|:--:|:--:|
+|SELECT FROM||||
+|LIMIT||||
+|ORDER BY||||
+|WHERE|||[链接](http://www.w3school.com.cn/sql/sql_where.asp)|
+|LIKE|可用于进行类似于使用 WHERE 和 = 的运算，但是这用于你可能 不 知道自己想准确查找哪些内容的情况||[链接](http://www.w3school.com.cn/sql/sql_like.asp)|
+|IN|用于执行类似于使用 WHERE 和 = 的运算，但用于多个条件的情况||[链接](http://www.w3school.com.cn/sql/sql_in.asp)|
+|NOT|这与 IN 和 LIKE 一起使用，用于选择 NOT LIKE 或 NOT IN 某个条件的所有行|||
+|AND & BETWEEN|可用于组合所有组合条件必须为真的运算|||
+|OR|可用于组合至少一个组合条件必须为真的运算|||
 
 
