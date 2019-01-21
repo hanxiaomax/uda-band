@@ -202,19 +202,45 @@ FROM web_events
 WHERE channel IN ('organic', 'adwords');
 ```
 
+### 5.算数运算符
+
+```sql
+SELECT id, account_id, standard_amt_usd/standard_qty AS unit_price
+FROM orders
+LIMIT 10;
+```
+
+其中 `unit_price` 是**派生列**，也就是根据一些列，经由算数运算符计算得到的新的一列，它会生成在新的表中。
+
+原表：
+```
+id	account_id	occurred_at	standard_qty	gloss_qty	poster_qty	total	standard_amt_usd	gloss_amt_usd	poster_amt_usd	total_amt_usd
+1	1001	2015-10-06T17:31:14.000Z	123	22	24	169	613.77	164.78	194.88	973.43
+2	1001	2015-11-05T03:34:33.000Z	190	41	57	288	948.10	307.09	462.84	1718.03
+3	1001	2015-12-04T04:21:55.000Z	85	47	0	132	424.15	352.03	0.00	776.18
+```
+
+结果（`unit_price`是派生列，通过`standard_amt_usd/standard_qty`得到）
+
+```
+id	account_id	unit_price
+1	1001	4.9900000000000000
+2	1001	4.9900000000000000
+3	1001	4.9900000000000000
+```
 
 ## 小结
 
 |语句|作用|样例|文档|
-|:--:|:--:|:--:|:--:|
-|SELECT FROM||||
-|LIMIT||||
-|ORDER BY||||
+|:--:|:--|:--|:--:|
+|SELECT FROM|||[链接]()|
+|LIMIT|||[链接]()|
+|ORDER BY|||[链接]()|
 |WHERE|||[链接](http://www.w3school.com.cn/sql/sql_where.asp)|
 |LIKE|可用于进行类似于使用 WHERE 和 = 的运算，但是这用于你可能 不 知道自己想准确查找哪些内容的情况||[链接](http://www.w3school.com.cn/sql/sql_like.asp)|
 |IN|用于执行类似于使用 WHERE 和 = 的运算，但用于多个条件的情况||[链接](http://www.w3school.com.cn/sql/sql_in.asp)|
-|NOT|这与 IN 和 LIKE 一起使用，用于选择 NOT LIKE 或 NOT IN 某个条件的所有行|||
-|AND & BETWEEN|可用于组合所有组合条件必须为真的运算|||
-|OR|可用于组合至少一个组合条件必须为真的运算|||
+|NOT|这与 IN 和 LIKE 一起使用，用于选择 NOT LIKE 或 NOT IN 某个条件的所有行||[链接]()|
+|AND & BETWEEN|可用于组合所有组合条件必须为真的运算||[链接]()|
+|OR|可用于组合至少一个组合条件必须为真的运算||[链接]()|
 
 
